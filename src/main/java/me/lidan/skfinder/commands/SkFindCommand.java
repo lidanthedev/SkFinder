@@ -36,14 +36,11 @@ public class SkFindCommand {
             public void run() {
 
                 try {
-                    /*Logger logger = Logger.getLogger("FileFindLog");
-                    FileHandler fh = new FileHandler("");*/
                     sender.sendMessage(String.format("[FileFind] Searching for %s in folder %s", query, folder.getPath()));
                     int count = 0;
                     File[] files = folder.listFiles();
                     assert files != null;
                     for (final File fileEntry : files) {
-                        // LOGGER.info("now reading file {}", fileEntry.getName());
                         BufferedReader reader = new BufferedReader(new FileReader(fileEntry.getAbsolutePath()));
                         int lines = 1;
                         String s;
