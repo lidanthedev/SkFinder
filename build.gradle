@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'me.lidan'
@@ -22,6 +23,10 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT"
     implementation 'com.github.Revxrsal.Lamp:common:3.1.7'
     implementation 'com.github.Revxrsal.Lamp:bukkit:3.1.7'
+}
+
+compileJava { // Preserve parameter names in the bytecode
+    options.compilerArgs += ["-parameters"]
 }
 
 def targetJavaVersion = 8
@@ -47,4 +52,14 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+build{
+    dependsOn(shadowJar)
+}
+
+jar.enabled = false
+
+shadowJar {
+    archiveClassifier.set('')
 }
