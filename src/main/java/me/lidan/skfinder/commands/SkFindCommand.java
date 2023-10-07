@@ -2,6 +2,7 @@ package me.lidan.skfinder.commands;
 
 import me.lidan.skfinder.SkFinder;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import revxrsal.commands.annotation.Command;
@@ -20,6 +21,8 @@ public class SkFindCommand {
     private final SkFinder plugin = SkFinder.getInstance();
     private final File skriptFolder = new File(plugin.getDataFolder().getParentFile(), "Skript/scripts");
 
+    private final String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "SkFinder" + ChatColor.GRAY + "] " + ChatColor.RESET;
+
     @Subcommand("search")
     public void searchFiles(CommandSender sender, String query){
         searchFiles(sender, skriptFolder, query, false);
@@ -31,41 +34,40 @@ public class SkFindCommand {
             return;
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                try {
-                    sender.sendMessage(String.format("[FileFind] Searching for %s in folder %s", query, folder.getPath()));
-                    int count = 0;
-                    File[] files = folder.listFiles();
-                    assert files != null;
-                    for (final File fileEntry : files) {
-                        BufferedReader reader = new BufferedReader(new FileReader(fileEntry.getAbsolutePath()));
-                        int lines = 1;
-                        String s;
-                        while ((s = reader.readLine()) != null) {
-                            if (!caseSensitive) s = s.toLowerCase();
-                            if (s.contains(query)) {
-                                s = s.replace(query, ChatColor.RED + query + ChatColor.RESET);
-                                sender.sendMessage("[FileFind] " + fileEntry.getName() + " " + s + " at line " + lines);
-                                plugin.getLogger().info("[FileFind] " + fileEntry.getName() + " " + s + " at line " + lines);
-                                count++;
-                            }
-                            lines++;
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                sender.sendMessage(PREFIX + ChatColor.WHITE + "Searching for " + ChatColor.GOLD + query + ChatColor.WHITE + "...");
+                int count = 0;
+                File[] files = folder.listFiles();
+                assert files != null;
+                for (final File file : files) {
+                    if (!file.isFile()) continue;
+                    BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                    int lineNumber = 1;
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if (!caseSensitive) line = line.toLowerCase();
+                        if (line.contains(query)) {
+                            line = line.trim();
+                            line = line.replace(query, ChatColor.YELLOW + query + ChatColor.GRAY);
+                            sender.sendMessage(ChatColor.GOLD + ChatColor.BOLD.toString() + "Line " + lineNumber + ": " + ChatColor.GRAY + "(" + file.getName() + ")");
+                            sender.sendMessage(ChatColor.GOLD + "    Line: " + ChatColor.GRAY + line);
+                            count++;
                         }
-                        reader.close();
+                        lineNumber++;
                     }
-                    if (count == 0) {
-                        sender.sendMessage("[FileFind] couldn't find " + query);
-                    }
-                    else{
-                        sender.sendMessage("[FileFind] Found " + query + " " + count + " times");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    reader.close();
                 }
+                if (count == 0) {
+                    sender.sendMessage(PREFIX + ChatColor.RED + "Failed to find " + ChatColor.GOLD + query);
+                }
+                else{
+                    sender.sendMessage(PREFIX + "Successfully found " + ChatColor.GOLD + query + ChatColor.GREEN + " " + count + ChatColor.RESET + " times");
+                }
+            } catch (IOException e) {
+                sender.sendMessage(PREFIX + "Encountered ERROR while searching! see console for logs.");
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(plugin);
+        });
     }
 }
