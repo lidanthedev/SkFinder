@@ -19,8 +19,8 @@ public class SearchResult {
 
     public List<String> format(){
         List<String> list = new ArrayList<>();
-        list.add(ColorUtils.trans("&6&lLine " + lineNumber + ": " + "&7(" + filePath + ")");
-        list.add(ColorUtils.trans("&6" + Line: " + "&7" + line));
+        list.add(ColorUtils.trans("&6&lLine " + lineNumber + ": " + "&7(" + filePath + ")"));
+        list.add(ColorUtils.trans("&6Line" + line + ": &7" + line));
         return list;
     }
 }
