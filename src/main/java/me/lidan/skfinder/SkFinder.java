@@ -5,10 +5,11 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import revxrsal.commands.CommandHandler;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
+import me.lidan.skfinder.utils.ColorUtils;
 
 public final class SkFinder extends JavaPlugin {
 
-    public static final String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "SkFinder" + ChatColor.GRAY + "] " + ChatColor.RESET;
+    public static final String PREFIX = ColorUtils.trans("&7[&6SkFinder&7]&r");
     private CommandHandler commandHandler;
 
     @Override
