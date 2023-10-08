@@ -1,7 +1,6 @@
 package me.lidan.skfinder.search;
 
 import net.md_5.bungee.api.ChatColor;
-import me.lidan.skfinder.utils.ColorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,8 @@ public class SearchResult {
 
     public List<String> format(){
         List<String> list = new ArrayList<>();
-        list.add(ColorUtils.trans("&6&lLine " + lineNumber + ": " + "&7(" + filePath + ")");
-        list.add(ColorUtils.trans("&6" + Line: " + "&7" + line));
+        list.add(ChatColor.GOLD + ChatColor.BOLD.toString() + "Line " + lineNumber + ": " + ChatColor.GRAY + "(" + filePath + ")");
+        list.add(ChatColor.GOLD + "    Line: " + ChatColor.GRAY + line);
         return list;
     }
 }

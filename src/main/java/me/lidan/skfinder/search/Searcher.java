@@ -1,7 +1,6 @@
 package me.lidan.skfinder.search;
 
 import me.lidan.skfinder.SkFinder;
-import me.lidan.skfinder.utils.ColorUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -61,7 +60,7 @@ public class Searcher {
             if (!caseSensitive) line = line.toLowerCase();
             line = line.trim();
             if (lineMatches(line)) {
-                line = line.replace(query, ColorUtils.trans("&e" + query + "&7"));
+                line = line.replace(query, ChatColor.YELLOW + query + ChatColor.GRAY);
                 searchResults.add(new SearchResult(line, lineNumber, getRelativePath(file)));
             }
             lineNumber++;
