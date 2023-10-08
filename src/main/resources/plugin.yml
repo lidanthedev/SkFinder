@@ -2,3 +2,4 @@ name: SkFinder
 version: '${version}'
 main: me.lidan.skfinder.SkFinder
 api-version: '1.13'
+author: Lidan
