@@ -4,6 +4,6 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ColorUtils {
     public static String trans(String str) {
-        return ChatColor.translateAlternativeColorCodes('&', str);
+        return ChatColor.translateAlternateColorCodes('&', str);
     }
 }
